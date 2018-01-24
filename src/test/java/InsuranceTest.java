@@ -47,9 +47,10 @@ public class InsuranceTest {
             Wait<WebDriver> wait = new WebDriverWait(driver, 5, 1000);
             wait.until(ExpectedConditions.visibilityOf(
                     driver.findElement(By.xpath("//A[@class='kit-link kit-link_color_black alt-menu-list__link alt-menu-list__link_level_1' and @href='/ru/person/bank_inshure/insuranceprogram/life/travel']"))
-            ));
+            )).click();
 
-            driver.findElement(By.xpath("//A[@class='kit-link kit-link_color_black alt-menu-list__link alt-menu-list__link_level_1' and @href='/ru/person/bank_inshure/insuranceprogram/life/travel']")).click();
+
+           // driver.findElement(By.xpath("//A[@class='kit-link kit-link_color_black alt-menu-list__link alt-menu-list__link_level_1' and @href='/ru/person/bank_inshure/insuranceprogram/life/travel']")).click();
             writer.write("Step 3: Выбрать – Страхование путешественников - Ok - " + LocalDateTime.now().toString() + "\n");
 
 
@@ -59,8 +60,8 @@ public class InsuranceTest {
 
 
             driver.findElement(By.xpath("//*[text()='Оформить онлайн']")).click();
-            driver.findElement(By.xpath("//IMG[@src='/portalserver/content/atom/contentRepository/content/person/travel/banner-zashita-traveler.jpg?id=f6c836e1-5c5c-4367-b0d0-bbfb96be9c53']")).click();
-            Thread.sleep(1000);
+            driver.findElement(By.xpath("//a//img[contains(@src,'banner-zashita-traveler')]")).click();
+
             writer.write("Step 5: Нажать – Оформит онлайн - Ok - " + LocalDateTime.now().toString() + "\n");
 
             for (String winHandle : driver.getWindowHandles()) {
@@ -69,25 +70,27 @@ public class InsuranceTest {
             }
 
 // //div[text()='Минимальная']   //DIV[@class='b-form-box-title ng-binding'][text()='Минимальная']
-            driver.findElement(By.xpath("//DIV[@class='b-form-box-title ng-binding'][text()='Минимальная']/..")).click();
+
+            wait.until(ExpectedConditions.elementToBeClickable(driver.findElement(By.xpath("//*[contains(text(),\"Минимальная\")]")))).click();
+            //driver.findElement(By.xpath("//DIV[@class='b-form-box-title ng-binding'][text()='Минимальная']/..")).click();
             writer.write("Step 6: Выбрать минимальную сумму страховой защиты - Ok - " + LocalDateTime.now().toString() + "\n");
 
             driver.findElement(By.xpath("//SPAN[@ng-click='save()'][text()='Оформить']")).click();
             writer.write("Step 7: Нажать оформить - Ok - " + LocalDateTime.now().toString() + "\n");
 
-            Thread.sleep(1000);
+
 
 
             //Заполнение данных страхуемого
             fillField(By.name("insured0_surname"), "PETROV");
-            Thread.sleep(1000);
+
             fillField(By.name("insured0_name"), "PETR");
-            Thread.sleep(1000);
+
 
             //ввод даты
             //driver.findElement(By.name("insured0_birthDate")).click();
             fillField(By.name("insured0_birthDate"), "01011990");
-            Thread.sleep(1000);
+
             writer.write("Step 8: Заполнить данные страхуемого - Ok - " + LocalDateTime.now().toString() + "\n");
 
 
@@ -100,17 +103,17 @@ public class InsuranceTest {
 
             //Заполнение данных страхователя
             driver.findElement(By.xpath("//INPUT[@ng-model='formdata.insurer.CITIZENSHIP' and @value='0']")).click();
-            Thread.sleep(1000);
+
             fillField(By.name("surname"), "ПЕТРОВ");
-            Thread.sleep(1000);
+
             fillField(By.name("name"), "ПЕТРО");
-            Thread.sleep(1000);
+
             fillField(By.name("middlename"), "ПЕТРОВИЧ");
-            Thread.sleep(1000);
+
             fillField(By.name("birthDate"), "02021960");
-            Thread.sleep(1000);
+
             driver.findElement(By.xpath("//*[@id=\"views\"]/section/form/section/section[2]/div/fieldset[8]/span[1]/input")).click();
-            Thread.sleep(1000);
+
             writer.write("Step 9: Заполнить данные страхователя - Ok - " + LocalDateTime.now().toString() + "\n");
 
 
@@ -122,14 +125,14 @@ public class InsuranceTest {
        */
 
             //Заполнение паспортных данных
-            fillField(By.xpath("//INPUT[@ng-model='formdata.insurer.documentList[0].DOCSERIES']"), "4444");
-            Thread.sleep(1000);
-            fillField(By.xpath("//INPUT[@ng-model='formdata.insurer.documentList[0].DOCNUMBER']"), "666666");
-            Thread.sleep(1000);
+            fillField(By.xpath("//input[@placeholder='Серия']"), "4444");
+
+            fillField(By.xpath("//input[@placeholder='Номер']"), "666666");
+
             fillField(By.xpath("//TEXTAREA[@name='issuePlace']"), "Отделением номер из города Энск тогда-то");
-            Thread.sleep(1000);
+
             fillField(By.name("issueDate"), "02022005");
-            Thread.sleep(1000);
+
             writer.write("Step 10: Заполнить паспортные данные страхователя и пропустить контактные данные - Ok - " + LocalDateTime.now().toString() + "\n");
 
 
@@ -166,7 +169,7 @@ public class InsuranceTest {
 
             assertEquals("Заполнены не все обязательные поля",
                     driver.findElement(By.xpath("//DIV[@ng-show='tryNext && myForm.$invalid']")).getText());
-            Thread.sleep(5000);
+            
             writer.write("Step 15: Проверка вывода сообщения об ошибке - Ok - " + LocalDateTime.now().toString() + "\n");
 
 
