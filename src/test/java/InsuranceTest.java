@@ -1,5 +1,5 @@
-import org.junit.After;
-import org.junit.Before;
+
+import org.junit.Ignore;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -13,40 +13,29 @@ import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.assertEquals;
 
-public class InsuranceTest {
-
-    private WebDriver driver;
-    private String baseUrl;
-
-
-    @Before
-    public void setUp() throws Exception {
-        System.setProperty("webdriver.chrome.driver", "stuff/chromedriver.exe");
-
-        driver = new ChromeDriver();
-        baseUrl = "http://www.sberbank.ru/ru/person";
-        driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
-        driver.manage().window().maximize();
-        driver.get(baseUrl);
-    }
+public class InsuranceTest extends BaseTest {
 
     @Test
+@Ignore
     public void testInsurance () throws Exception {
 
 
         try {
+
+            driver.get(baseUrl);
+
             FileWriter writer = new FileWriter("G:\\GitHub\\Lesson1\\stuff\\logs.txt", true);
             writer.write("Step 1: Переход на сайт Сбербанка http://www.sberbank.ru/ru/person - Ok - " + LocalDateTime.now() + "\n");
 
 
-            driver.findElement(By.xpath("//*[@aria-label='Раздел Застраховать себя  и имущество']")).click();
+            driver.findElement(By.xpath("//div[contains(@data-pid,'widget_3719')]//*[@aria-label='Раздел Застраховать себя  и имущество']")).click();
             writer.write("Step 2: Нажать на – Застраховать себя и имущество - Оk - " + LocalDateTime.now().toString() + "\n");
 
 
 
             Wait<WebDriver> wait = new WebDriverWait(driver, 5, 1000);
             wait.until(ExpectedConditions.visibilityOf(
-                    driver.findElement(By.xpath("//A[@class='kit-link kit-link_color_black alt-menu-list__link alt-menu-list__link_level_1' and @href='/ru/person/bank_inshure/insuranceprogram/life/travel']"))
+                    driver.findElement(By.xpath("//div[contains(@class,'bp-area header-container')]//a[contains(text(),'Страхование путешественников')]"))
             )).click();
 
 
@@ -169,7 +158,7 @@ public class InsuranceTest {
 
             assertEquals("Заполнены не все обязательные поля",
                     driver.findElement(By.xpath("//DIV[@ng-show='tryNext && myForm.$invalid']")).getText());
-            
+
             writer.write("Step 15: Проверка вывода сообщения об ошибке - Ok - " + LocalDateTime.now().toString() + "\n");
 
 
@@ -180,13 +169,4 @@ public class InsuranceTest {
 
     }
 
-    @After
-    public void tearDown() throws Exception {
-        driver.quit();
-    }
-
-    private void fillField(By locator, String value){
-        driver.findElement(locator).clear();
-        driver.findElement(locator).sendKeys(value);
-    }
 }
