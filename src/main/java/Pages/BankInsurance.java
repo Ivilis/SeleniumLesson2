@@ -33,10 +33,10 @@ public class BankInsurance extends BasePage{
     public void chooseRequestType (String requesttype) {
         switch (requesttype) {
             case "онлайн":
-                tabContainer.findElement(By.xpath(".//*[contains(text(),'онлайн')]"));
+                tabContainer.findElement(By.xpath(".//*[contains(text(),'онлайн')]")).click();
                 break;
             case "оффлайн":
-                tabContainer.findElement(By.xpath(".//*[contains(text(),'в отделении')]"));
+                tabContainer.findElement(By.xpath(".//*[contains(text(),'в отделении')]")).click();
                 break;
             default:
                 throw new AssertionError("Поле '" + requesttype + "' не объявлено на странице");
